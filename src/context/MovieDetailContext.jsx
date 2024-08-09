@@ -5,15 +5,6 @@ import YouTube from "react-youtube";
 
 const MovieContext = createContext();
 
-const opts = {
-  height: "390",
-  width: "640",
-  playerVars: {
-    // https://developers.google.com/youtube/player_parameters
-    autoplay: 1,
-  },
-};
-
 const MovieProvider = ({ children }) => {
   const [trailerUrl, setTrailerUrl] = useState("");
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -52,21 +43,62 @@ const MovieProvider = ({ children }) => {
           overlay: {
             position: "fixed",
             zIndex: 9999,
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.75)",
           },
           content: {
+            position: "absolute",
             top: "50%",
             left: "50%",
-            right: "auto",
-            bottom: "auto",
-            marginRight: "-50%",
             transform: "translate(-50%, -50%)",
+            maxWidth: "90vw",
+            maxHeight: "80vh",
+            width: "80vw",
+            height: "auto",
+            padding: "0",
+            border: "none",
+            background: "#000", // Dark background to match video
+            overflow: "hidden",
+            borderRadius: "8px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           },
         }}
-        contentLabel="Example Modal"
+        contentLabel="Video Trailer"
       >
         {trailerUrl && (
-          <div className="flex items-center justify-center mt-5">
-            <YouTube videoId={trailerUrl} opts={opts} />
+          <div style={{ 
+            position: "relative", 
+            width: "100%", 
+            height: "0", 
+            paddingBottom: "56.25%", // 16:9 aspect ratio
+            overflow: "hidden",
+            margin: "0",
+            backgroundColor: "#000" // Ensure the background matches the modal
+          }}>
+            <YouTube
+              videoId={trailerUrl}
+              opts={{
+                height: "100%",
+                width: "100%",
+                playerVars: {
+                  autoplay: 1,
+                },
+              }}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                border: "none",
+                margin: "0",
+              }}
+            />
           </div>
         )}
       </Modal>
